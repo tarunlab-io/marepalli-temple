@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery - Marepalli Temple</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Floating Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <img src="assets/om-symbol.svg" alt="Om" onerror="this.style.display='none'">
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html" class="lang-en">Home</a><a href="index.html" class="lang-te hidden">హోమ్</a></li>
+                <li><a href="about.html" class="lang-en">About Us</a><a href="about.html" class="lang-te hidden">మా గురించి</a></li>
+                <li><a href="donations.html" class="lang-en">Donations</a><a href="donations.html" class="lang-te hidden">విరాళాలు</a></li>
+                <li><a href="gallery.html" class="active lang-en">Gallery</a><a href="gallery.html" class="active lang-te hidden">గ్యాలరీ</a></li>
+                <li><a href="events.html" class="lang-en">Events</a><a href="events.html" class="lang-te hidden">కార్యక్రమాలు</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="audio-toggle-btn" class="audio-toggle-btn">🎵</button>
+                <button id="lang-toggle" class="lang-toggle-btn">TELUGU</button>
+            </div>
+
+            <div class="hamburger">☰</div>
+        </div>
+        
+        <!-- Dynamic Scrolling Notice (Loaded from Firebase) -->
+        <div id="notice-bar" class="notice-wrapper" style="display: none;">
+            <div id="dynamic-notice" class="scrolling-text">Loading announcements...</div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="lang-en">Photo Gallery</h1>
+        <h1 class="lang-te hidden">ఫోటో గ్యాలరీ</h1>
+        <div class="decorative-line"><span>🕉️</span></div>
+    </div>
+
+    <section class="container" style="min-height: 50vh;">
+        <!-- Year Categorization Tabs -->
+        <div class="category-tabs" id="album-tabs">
+            <!-- Dynamically populated from Firestore -->
+        </div>
+
+        <!-- ALBUM COVERS VIEW -->
+        <div class="full-gallery" id="albums-container">
+            <h3 style="color:var(--text-muted);width:100%;text-align:center;">Loading albums...</h3>
+        </div>
+
+        <!-- INSIDE ALBUM VIEW (Hidden by default) -->
+        <div id="inner-album-view" style="display:none;">
+            <div class="album-header">
+                <button class="back-btn" onclick="closeAlbum()">⬅ Back to Albums</button>
+                <h2 id="current-album-title" class="lang-en" style="margin-top:20px; font-size:2rem;">Album Title</h2>
+                <h2 id="current-album-title-te" class="lang-te hidden" style="margin-top:20px; font-size:2rem;">ఆల్బమ్ శీర్షిక</h2>
+                <div class="decorative-line"><span>🕉️</span></div>
+            </div>
+            
+            <div class="photo-grid" id="photo-grid-container">
+                <!-- Photos will be injected here via JavaScript based on the album clicked -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-img" id="lightbox-img">
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p class="lang-en">&copy; 2026 Sri Kalyana Venkateswara Swamy Temple, Marepalli.</p>
+        <p class="lang-te hidden">&copy; 2026 శ్రీ కల్యాణ వెంకటేశ్వర స్వామి దేవస్థానం, మారేపల్లి.</p>
+    </footer>
+
+    <audio id="bg-audio" loop autoplay>
+        <source src="assets/bg_music.mp3" type="audio/mpeg">
+    </audio>
+    <script src="script.js"></script>
+
+    <!-- Firebase Dynamic Data -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfuabbmPgSFHFcGWFmSnGie2OoWI9GDFQ",
+            authDomain: "marepalli-temple0.firebaseapp.com",
+            projectId: "marepalli-temple0",
+            storageBucket: "marepalli-temple0.firebasestorage.app",
+            messagingSenderId: "789929008512",
+            appId: "1:789929008512:web:0bc99ee02f5bfba4b4f565"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Listen for live updates to the notice!
+        db.collection("settings").doc("notice").onSnapshot((docSnap) => {
+            const data = docSnap.data();
+            if (data && data.text) {
+                document.getElementById('notice-bar').style.display = 'block';
+                document.getElementById('dynamic-notice').innerText = data.text;
+            } else {
+                document.getElementById('notice-bar').style.display = 'none';
+            }
+        });
+
+        // Dynamic Gallery Logic
+        let allFolders = [];
+
+        db.collection("folders").orderBy("year", "desc").onSnapshot(snapshot => {
+            allFolders = [];
+            snapshot.forEach(doc => allFolders.push(doc.data()));
+            renderGallery();
+        });
+
+        function renderGallery() {
+            const container = document.getElementById('albums-container');
+            const tabsDiv = document.getElementById('album-tabs');
+            
+            if (allFolders.length === 0) {
+                container.innerHTML = '<h3 style="color:var(--text-muted);width:100%;text-align:center;">No albums found. Use Admin Dashboard to create some!</h3>';
+                tabsDiv.innerHTML = '';
+                return;
+            }
+
+            // Extract unique years
+            const years = [...new Set(allFolders.map(f => f.year))].sort((a,b) => b - a);
+            const latestYear = years[0];
+            
+            // Build Tabs
+            tabsDiv.innerHTML = '';
+            years.forEach((year, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'tab-btn' + (index === 0 ? ' active' : '');
+                btn.innerText = year;
+                btn.onclick = (e) => filterAlbums(year, e);
+                tabsDiv.appendChild(btn);
+            });
+
+            // Build Covers
+            container.innerHTML = '';
+            allFolders.forEach(folder => {
+                const div = document.createElement('div');
+                div.className = `album-cover item-${folder.year}`;
+                if (String(folder.year) !== String(latestYear)) div.style.display = 'none';
+                
+                div.onclick = () => openAlbum(folder.id, folder.titleEn, folder.titleTe);
+                div.innerHTML = `
+                    <img src="${folder.coverUrl}" onerror="this.onerror=null; this.src='https://placehold.co/400x300/1a1a1a/ff9933?text=Broken+Link';">
+                    <div class="album-overlay">
+                        <div class="album-title lang-en">${folder.titleEn}</div>
+                        <div class="album-title lang-te hidden">${folder.titleTe}</div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            applyLanguageStyles();
+        }
+
+        function filterAlbums(year, event) {
+            document.querySelectorAll('#album-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(event) event.target.classList.add('active');
+            
+            document.querySelectorAll('.album-cover').forEach(item => {
+                if(item.classList.contains('item-' + year)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        async function openAlbum(albumId, titleEn, titleTe) {
+            document.getElementById('albums-container').style.display = 'none';
+            document.getElementById('album-tabs').style.display = 'none';
+            document.getElementById('inner-album-view').style.display = 'block';
+            
+            document.getElementById('current-album-title').innerText = titleEn;
+            document.getElementById('current-album-title-te').innerText = titleTe || titleEn;
+
+            const gridContainer = document.getElementById('photo-grid-container');
+            gridContainer.innerHTML = '<h3 style="color:var(--text-muted);width:100%;text-align:center;">Loading photos...</h3>';
+
+            try {
+                // Fetch directly from the dynamic album collection
+                db.collection(`albums_${albumId}`).orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                    gridContainer.innerHTML = '';
+                    if(snapshot.empty) {
+                        gridContainer.innerHTML = '<h3 style="color:var(--text-muted);width:100%;text-align:center;">No photos in this album yet.</h3>';
+                        return;
+                    }
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const photoCard = document.createElement('div');
+                        photoCard.className = 'photo-card';
+                        photoCard.innerHTML = `<img src="${data.url}" onclick="openLightbox('${data.url}')" onerror="this.onerror=null; this.src='https://placehold.co/400x300/1a1a1a/ff9933?text=Broken+Link';">`;
+                        gridContainer.appendChild(photoCard);
+                    });
+                });
+            } catch(e) {
+                console.log("Error fetching live photos:", e);
+                gridContainer.innerHTML = '<h3 style="color:var(--text-muted);width:100%;text-align:center;">Error loading photos.</h3>';
+            }
+
+            window.scrollTo(0, 0);
+            applyLanguageStyles();
+        }
+
+        function closeAlbum() {
+            document.getElementById('albums-container').style.display = 'grid'; 
+            document.getElementById('album-tabs').style.display = 'flex';
+            document.getElementById('inner-album-view').style.display = 'none';
+        }
+
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imgSrc;
+            lightbox.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+        
+        function applyLanguageStyles() {
+            const currentLang = localStorage.getItem('templeLang') || 'en';
+            if (currentLang === 'en') {
+                document.querySelectorAll('.lang-te').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.remove('hidden'));
+            } else {
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.lang-te').forEach(el => el.classList.remove('hidden'));
+            }
+        }
+    </script>
+</body>
+</html>

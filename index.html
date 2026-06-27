@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Kalyana Venkateswara Swamy Temple</title>
+    <link rel="stylesheet" href="styles.css?v=11">
+</head>
+<body>
+
+    <!-- Floating Navbar -->
+    <nav class="navbar" id="main-nav">
+        <div class="nav-container">
+            <div class="logo-area">
+                <!-- Logo removed per user request -->
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html" class="active lang-en">Home</a><a href="index.html" class="active lang-te hidden">హోమ్</a></li>
+                <li><a href="about.html" class="lang-en">About Us</a><a href="about.html" class="lang-te hidden">మా గురించి</a></li>
+                <li><a href="donations.html" class="lang-en">Donations</a><a href="donations.html" class="lang-te hidden">విరాళాలు</a></li>
+                <li><a href="gallery.html" class="lang-en">Gallery</a><a href="gallery.html" class="lang-te hidden">గ్యాలరీ</a></li>
+                <li><a href="events.html" class="lang-en">Events</a><a href="events.html" class="lang-te hidden">కార్యక్రమాలు</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="audio-toggle-btn" class="audio-toggle-btn">🎵</button>
+                <button id="lang-toggle" class="lang-toggle-btn">TELUGU</button>
+            </div>
+
+            <div class="hamburger">☰</div>
+        </div>
+
+        <!-- Dynamic Scrolling Notice (Loaded from Firebase) -->
+        <div id="notice-bar" class="notice-wrapper" style="display: none;">
+            <div id="dynamic-notice" class="scrolling-text">Loading announcements...</div>
+        </div>
+    </nav>
+
+    <!-- Elegant Hero Banner -->
+    <div class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-text-box">
+                <h3 class="district-info lang-en">Marepalli Village, Devarapalli Mandal, Anakapalli District</h3>
+                <h3 class="district-info lang-te hidden">అనకాపల్లి జిల్లా, దేవరాపల్లి మండలం, మారేపల్లి గ్రామం</h3>
+                
+                <h1 class="main-title lang-en">Sri Sri Sri Sridevi Bhudevi Sametha<br><span class="highlight">Kalyana Venkateswara Swamy</span><br>Temple</h1>
+                <h1 class="main-title lang-te hidden">శ్రీ శ్రీ శ్రీ శ్రీదేవి భూదేవి సమేత<br><span class="highlight">కల్యాణ వెంకటేశ్వర స్వామి</span><br>వారి దేవస్థానం</h1>
+                
+                <p class="hero-description lang-en">A divine sanctuary dedicated to Lord Venkateswara. Experience spiritual bliss, participate in sacred rituals, and witness the architectural marvel in the making.</p>
+                <p class="hero-description lang-te hidden">శ్రీ వెంకటేశ్వర స్వామి వారి దివ్య క్షేత్రం. ఆధ్యాత్మిక ఆనందాన్ని పొందండి, పవిత్ర పూజలలో పాల్గొనండి, మరియు నిర్మాణంలో ఉన్న ఈ అద్భుత క్షేత్రాన్ని దర్శించండి.</p>
+                
+                <a href="about.html" class="primary-btn">
+                    <span class="lang-en">Discover Our History</span>
+                    <span class="lang-te hidden">మా చరిత్ర గురించి</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Notice Board -->
+    <section id="notice-board-section" class="notice-board-section">
+        <div class="notice-board-card">
+            <h2 class="notice-board-title lang-en">Important Notice</h2>
+            <h2 class="notice-board-title lang-te hidden">ముఖ్య గమనిక</h2>
+            <p id="notice-board-text-en" class="lang-en"></p>
+            <p id="notice-board-text-te" class="lang-te hidden"></p>
+        </div>
+    </section>
+
+    <!-- Devotee Services -->
+    <section class="container">
+        <div class="section-title lang-en">Devotee Services</div>
+        <div class="section-title lang-te hidden">భక్తుల సేవలు</div>
+        <div class="decorative-line"><span>🕉️</span></div>
+
+        <div class="services-grid">
+            <!-- Card 1 -->
+            <div class="service-card">
+                <h3>📍</h3>
+                <h3 class="lang-en">Contact & Location</h3>
+                <h3 class="lang-te hidden">సంప్రదించండి & స్థలం</h3>
+                <p class="lang-en">Find directions to the temple and get in touch with the committee.</p>
+                <p class="lang-te hidden">ఆలయానికి దారి తెలుసుకోండి మరియు కమిటీని సంప్రదించండి.</p>
+                <br>
+                <a href="#location" class="primary-btn" style="padding: 8px 20px; font-size: 0.9rem;">
+                    <span class="lang-en">Find Us ➔</span>
+                    <span class="lang-te hidden">వివరాలు ➔</span>
+                </a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="service-card">
+                <h3>🪙</h3>
+                <h3 class="lang-en">Donations</h3>
+                <h3 class="lang-te hidden">విరాళాలు</h3>
+                <p class="lang-en">Contribute to the welfare and construction of the Temple.</p>
+                <p class="lang-te hidden">ఆలయ అభివృద్ధికి మరియు నిర్మాణానికి విరాళం ఇవ్వండి.</p>
+                <br>
+                <a href="donations.html" class="primary-btn" style="padding: 8px 20px; font-size: 0.9rem;">
+                    <span class="lang-en">Donate ➔</span>
+                    <span class="lang-te hidden">విరాళం ➔</span>
+                </a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="service-card">
+                <h3>📅</h3>
+                <h3 class="lang-en">Temple Events</h3>
+                <h3 class="lang-te hidden">ఆలయ కార్యక్రమాలు</h3>
+                <p class="lang-en">Participate in grand festivals and daily rituals.</p>
+                <p class="lang-te hidden">మారేపల్లి దేవస్థానంలో జరిగే ఉత్సవాలలో పాల్గొనండి.</p>
+                <br>
+                <a href="events.html" class="primary-btn" style="padding: 8px 20px; font-size: 0.9rem;">
+                    <span class="lang-en">View ➔</span>
+                    <span class="lang-te hidden">వివరాలు ➔</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Preview Section -->
+    <section class="container" style="padding-top: 0;">
+        <div class="section-title lang-en">Photo Gallery</div>
+        <div class="section-title lang-te hidden">ఫోటో గ్యాలరీ</div>
+        <div class="decorative-line"><span>🪔</span></div>
+
+        <div class="home-gallery-grid">
+            <div class="home-gallery-item">
+                <img src="assets/gallery_temple.png" alt="Temple Architecture">
+            </div>
+            <div class="home-gallery-item">
+                <img src="assets/gallery_ritual.png" alt="Sacred Rituals">
+            </div>
+            <div class="home-gallery-item">
+                <img src="assets/gallery_deity.png" alt="Deity">
+            </div>
+        </div>
+
+        <div class="view-all-container">
+            <a href="gallery.html" class="primary-btn">
+                <span class="lang-en">View Full Gallery ➔</span>
+                <span class="lang-te hidden">అన్ని ఫోటోలు చూడండి ➔</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Location & Contact Section -->
+    <section id="location" class="container" style="padding-top: 0;">
+        <div class="section-title lang-en">Contact & Location</div>
+        <div class="section-title lang-te hidden">సంప్రదించండి & స్థలం</div>
+        <div class="decorative-line"><span>📍</span></div>
+
+        <div class="location-container">
+            <div class="map-box">
+                <!-- Google Maps exact iframe provided by user -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14648.899991385359!2d82.9581042!3d17.9477073!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a3bd55385e10fa3%3A0x5f920ce06e5ce877!2sMarepalli%20Sri%20Sri%20Sri%20Sreedevi%20Bhoodevi%20Sametha%20Venkateswara%20Swamy!5e1!3m2!1sen!2sin!4v1782488260376!5m2!1sen!2sin" width="100%" height="300" style="border:0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <div class="contact-info-box">
+                <h3 class="lang-en">Temple Address</h3>
+                <h3 class="lang-te hidden">ఆలయ చిరునామా</h3>
+                <p class="lang-en">Sri Sri Sri Sridevi Bhudevi Sametha Kalyana Venkateswara Swamy Temple,<br>Marepalli Village, Devarapalli Mandal,<br>Anakapalli District, Andhra Pradesh.</p>
+                <p class="lang-te hidden">శ్రీ శ్రీ శ్రీ శ్రీదేవి భూదేవి సమేత కల్యాణ వెంకటేశ్వర స్వామి దేవస్థానం,<br>మారేపల్లి గ్రామం, దేవరాపల్లి మండలం,<br>అనకాపల్లి జిల్లా, ఆంధ్ర ప్రదేశ్.</p>
+                
+                <h3 class="lang-en" style="margin-top: 20px;">Contact Details</h3>
+                <h3 class="lang-te hidden" style="margin-top: 20px;">సంప్రదింపు వివరాలు</h3>
+                <p>📞 +91 XXXXX XXXXX</p>
+                <p>✉️ info@marepallitemple.org</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="lang-en">&copy; 2026 Sri Kalyana Venkateswara Swamy Temple, Marepalli. All Rights Reserved.</p>
+        <p class="lang-te hidden">&copy; 2026 శ్రీ కల్యాణ వెంకటేశ్వర స్వామి దేవస్థానం, మారేపల్లి. సర్వ హక్కులు ప్రత్యేకించబడినవి.</p>
+    </footer>
+
+    <!-- Background Audio -->
+    <audio id="bg-audio" loop autoplay>
+        <source src="assets/bg_music.mp3" type="audio/mpeg">
+    </audio>
+    <script src="script.js"></script>
+    
+    <!-- Firebase Dynamic Data -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfuabbmPgSFHFcGWFmSnGie2OoWI9GDFQ",
+            authDomain: "marepalli-temple0.firebaseapp.com",
+            projectId: "marepalli-temple0",
+            storageBucket: "marepalli-temple0.firebasestorage.app",
+            messagingSenderId: "789929008512",
+            appId: "1:789929008512:web:0bc99ee02f5bfba4b4f565"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Dynamic Notice Bar Logic
+        db.collection("settings").doc("notice").onSnapshot((docSnap) => {
+            const data = docSnap.data();
+            if (data && data.text) {
+                document.getElementById('notice-bar').style.display = 'block';
+                document.getElementById('dynamic-notice').innerText = data.text;
+            } else {
+                document.getElementById('notice-bar').style.display = 'none';
+            }
+        });
+
+        // Main Notice Board Logic
+        db.collection("settings").doc("noticeBoard").onSnapshot((docSnap) => {
+            if (docSnap.exists) {
+                const data = docSnap.data();
+                const section = document.getElementById('notice-board-section');
+                if (data.isVisible && (data.textEn || data.textTe)) {
+                    section.style.display = 'block';
+                    document.getElementById('notice-board-text-en').innerText = data.textEn || '';
+                    document.getElementById('notice-board-text-te').innerText = data.textTe || data.textEn || '';
+                } else {
+                    section.style.display = 'none';
+                }
+            }
+        }, (error) => {
+            console.error("Firebase read error: ", error);
+        });
+        // Mobile Hamburger Menu
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if(hamburger) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - Marepalli Temple</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Floating Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <img src="assets/om-symbol.svg" alt="Om" onerror="this.style.display='none'">
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html" class="lang-en">Home</a><a href="index.html" class="lang-te hidden">హోమ్</a></li>
+                <li><a href="about.html" class="lang-en">About Us</a><a href="about.html" class="lang-te hidden">మా గురించి</a></li>
+                <li><a href="donations.html" class="lang-en">Donations</a><a href="donations.html" class="lang-te hidden">విరాళాలు</a></li>
+                <li><a href="gallery.html" class="lang-en">Gallery</a><a href="gallery.html" class="lang-te hidden">గ్యాలరీ</a></li>
+                <li><a href="events.html" class="active lang-en">Events</a><a href="events.html" class="active lang-te hidden">కార్యక్రమాలు</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="audio-toggle-btn" class="audio-toggle-btn">🎵</button>
+                <button id="lang-toggle" class="lang-toggle-btn">TELUGU</button>
+            </div>
+
+            <div class="hamburger">☰</div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="lang-en">Temple Events</h1>
+        <h1 class="lang-te hidden">ఆలయ కార్యక్రమాలు</h1>
+        <div class="decorative-line"><span>🕉️</span></div>
+    </div>
+
+    <section class="container" style="min-height: 50vh;">
+        <!-- Event Categorization Tabs -->
+        <div class="category-tabs">
+            <button class="tab-btn active" onclick="filterEvents('kalyanam')">Kalyanotsavam</button>
+            <button class="tab-btn" onclick="filterEvents('brahmotsavam')">Brahmotsavam</button>
+            <button class="tab-btn" onclick="filterEvents('ugadi')">Ugadi Special</button>
+        </div>
+
+        <div class="full-gallery" id="events-container">
+            <!-- Kalyanotsavam Photos -->
+            <div class="gallery-item item-kalyanam">
+                <img src="assets/gallery_temple.png" alt="Decoration">
+                <div class="gallery-caption lang-en">Kalyana Mandapam Decoration</div>
+                <div class="gallery-caption lang-te hidden">కల్యాణ మండపం అలంకరణ</div>
+            </div>
+            <div class="gallery-item item-kalyanam">
+                <img src="assets/gallery_ritual.png" alt="Homam">
+                <div class="gallery-caption lang-en">Kalyanotsava Homam</div>
+                <div class="gallery-caption lang-te hidden">కల్యాణోత్సవ హోమం</div>
+            </div>
+            <div class="gallery-item item-kalyanam">
+                <img src="assets/gallery_deity.png" alt="Deity">
+                <div class="gallery-caption lang-en">Deities in Kalyanam</div>
+                <div class="gallery-caption lang-te hidden">కల్యాణంలో స్వామివారు</div>
+            </div>
+
+            <!-- Brahmotsavam Placeholder -->
+            <div class="gallery-item item-brahmotsavam" style="display:none;">
+                <img src="assets/gallery_deity.png" alt="Brahmotsavam">
+                <div class="gallery-caption lang-en">Garuda Vahanam</div>
+                <div class="gallery-caption lang-te hidden">గరుడ వాహనం</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="lang-en">&copy; 2026 Sri Kalyana Venkateswara Swamy Temple, Marepalli.</p>
+        <p class="lang-te hidden">&copy; 2026 శ్రీ కల్యాణ వెంకటేశ్వర స్వామి దేవస్థానం, మారేపల్లి.</p>
+    </footer>
+
+    <!-- Background Audio -->
+    <audio id="bg-audio" loop autoplay>
+        <source src="assets/bg_music.mp3" type="audio/mpeg">
+    </audio>
+    <script src="script.js"></script>
+    <script>
+        function filterEvents(eventName) {
+            document.querySelectorAll('.category-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                if(item.classList.contains('item-' + eventName)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

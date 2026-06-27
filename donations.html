@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donations - Marepalli Temple</title>
+    <link rel="stylesheet" href="styles.css?v=12">
+</head>
+<body>
+
+    <!-- Floating Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <img src="assets/om-symbol.svg" alt="Om" onerror="this.style.display='none'">
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html" class="lang-en">Home</a><a href="index.html" class="lang-te hidden">హోమ్</a></li>
+                <li><a href="about.html" class="lang-en">About Us</a><a href="about.html" class="lang-te hidden">మా గురించి</a></li>
+                <li><a href="donations.html" class="active lang-en">Donations</a><a href="donations.html" class="active lang-te hidden">విరాళాలు</a></li>
+                <li><a href="gallery.html" class="lang-en">Gallery</a><a href="gallery.html" class="lang-te hidden">గ్యాలరీ</a></li>
+                <li><a href="events.html" class="lang-en">Events</a><a href="events.html" class="lang-te hidden">కార్యక్రమాలు</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="audio-toggle-btn" class="audio-toggle-btn">🎵</button>
+                <button id="lang-toggle" class="lang-toggle-btn">TELUGU</button>
+            </div>
+
+            <div class="hamburger">☰</div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="lang-en">E-Hundi & Donations</h1>
+        <h1 class="lang-te hidden">ఈ-హుండీ & విరాళాలు</h1>
+        <div class="decorative-line"><span>🕉️</span></div>
+    </div>
+
+    <section class="container" style="min-height: 50vh;">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <p class="lang-en preface">Your generous contributions help in the daily rituals, maintenance, and development of the temple.</p>
+            <p class="lang-te hidden preface">మీ విరాళాలు ఆలయ నిత్య పూజలు, నిర్వహణ మరియు అభివృద్ధికి ఉపయోగపడతాయి.</p>
+            <br>
+            <button class="primary-btn" style="font-size: 1.1rem; padding: 15px 40px; border: none; cursor: pointer;">
+                <span class="lang-en">Proceed to Payment Gateway</span>
+                <span class="lang-te hidden">చెల్లింపుకు వెళ్లండి</span>
+            </button>
+        </div>
+
+        <h2 class="section-title lang-en">Recent Donors</h2>
+        <h2 class="section-title lang-te hidden">ఇటీవలి దాతలు</h2>
+        <div class="decorative-line"><span>🪔</span></div>
+
+        <div style="overflow-x: auto; width: 100%;">
+            <table class="donor-list">
+            <thead>
+                <tr>
+                    <th class="lang-en">Date</th><th class="lang-te hidden">తేదీ</th>
+                    <th class="lang-en">Name</th><th class="lang-te hidden">పేరు</th>
+                    <th class="lang-en">Purpose</th><th class="lang-te hidden">కారణం</th>
+                    <th class="lang-en">Amount (₹)</th><th class="lang-te hidden">మొత్తం (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="donations-tbody">
+                <tr>
+                    <td colspan="4" style="text-align: center;">Loading recent donations...</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="lang-en">&copy; 2026 Sri Kalyana Venkateswara Swamy Temple, Marepalli.</p>
+        <p class="lang-te hidden">&copy; 2026 శ్రీ కల్యాణ వెంకటేశ్వర స్వామి దేవస్థానం, మారేపల్లి.</p>
+    </footer>
+
+    <!-- Background Audio -->
+    <audio id="bg-audio" loop autoplay>
+        <source src="assets/bg_music.mp3" type="audio/mpeg">
+    </audio>
+    <script src="script.js"></script>
+
+    <!-- Firebase Dynamic Data -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfuabbmPgSFHFcGWFmSnGie2OoWI9GDFQ",
+            authDomain: "marepalli-temple0.firebaseapp.com",
+            projectId: "marepalli-temple0",
+            storageBucket: "marepalli-temple0.firebasestorage.app",
+            messagingSenderId: "789929008512",
+            appId: "1:789929008512:web:0bc99ee02f5bfba4b4f565"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        db.collection("donations").orderBy("date", "desc").onSnapshot((snapshot) => {
+            const tbody = document.getElementById("donations-tbody");
+            tbody.innerHTML = "";
+            
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Be the first to donate!</td></tr>';
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                
+                // Format Date (DD-MM-YYYY)
+                const d = new Date(data.date);
+                const formattedDate = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth()+1).padStart(2, '0')}-${d.getFullYear()}`;
+                
+                // Format Amount (Indian Rupee commas)
+                const formattedAmount = Number(data.amount).toLocaleString('en-IN');
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td>${data.name || 'Anonymous'}</td>
+                    <td>${data.purpose || 'Temple Development'}</td>
+                    <td>${formattedAmount}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }, (error) => {
+            console.error("Firebase read error: ", error);
+        });
+    </script>
+</body>
+</html>
