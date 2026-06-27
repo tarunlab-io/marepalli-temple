@@ -108,5 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 sessionStorage.setItem('audioPaused', 'true');
             }
         });
+
+        // Pause audio when app/browser is put in background
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                bgAudio.pause();
+            } else {
+                if (sessionStorage.getItem('audioPaused') !== 'true') {
+                    bgAudio.play().catch(e => console.log('Resume blocked'));
+                }
+            }
+        });
     }
 });
