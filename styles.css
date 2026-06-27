@@ -697,8 +697,8 @@ h1, h2, h3, h4 {
 }
 .contact-info-box p {
     color: var(--text-dark);
-    margin-bottom: 8px;
-    line-height: 1.6;
+    margin-bottom: 4px;
+    line-height: 1.4;
 }
 
 /* Footer */
